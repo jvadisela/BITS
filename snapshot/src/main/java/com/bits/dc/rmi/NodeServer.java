@@ -1,7 +1,8 @@
-package nl.tue.ds.rmi;
+package com.bits.dc.rmi;
 
-import nl.tue.ds.entity.Node;
 import org.jetbrains.annotations.NotNull;
+
+import com.bits.dc.model.Node;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

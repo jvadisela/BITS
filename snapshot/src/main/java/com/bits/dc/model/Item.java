@@ -1,4 +1,4 @@
-package nl.tue.ds.entity;
+package com.bits.dc.model;
 
 import com.google.common.base.MoreObjects;
 

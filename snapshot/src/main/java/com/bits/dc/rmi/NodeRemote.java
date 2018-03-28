@@ -1,11 +1,12 @@
-package nl.tue.ds.rmi;
+package com.bits.dc.rmi;
 
-import nl.tue.ds.entity.Node;
-import nl.tue.ds.entity.Snapshot;
-import nl.tue.ds.util.RemoteUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+
+import com.bits.dc.model.Node;
+import com.bits.dc.model.Snapshot;
+import com.bits.dc.utils.RemoteUtil;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

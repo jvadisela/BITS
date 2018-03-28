@@ -1,15 +1,16 @@
-package nl.tue.ds;
+package com.bits.dc;
 
-import nl.tue.ds.entity.Node;
-import nl.tue.ds.rmi.NodeRemote;
-import nl.tue.ds.util.InputUtil;
-import nl.tue.ds.util.NetworkUtil;
-import nl.tue.ds.util.RemoteUtil;
-import nl.tue.ds.util.StorageUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import com.bits.dc.model.Node;
+import com.bits.dc.rmi.NodeRemote;
+import com.bits.dc.utils.InputUtil;
+import com.bits.dc.utils.NetworkUtil;
+import com.bits.dc.utils.RemoteUtil;
+import com.bits.dc.utils.StorageUtil;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -54,25 +55,25 @@ public final class ServerLauncher {
      * Example: cut
      */
     public static void main(String[] args) {
-        logger.info("You can change service configuration parameters in " + ServiceConfiguration.CONFIGURATION_FILE);
-        logger.info("Service configuration: RMI port=" + RMI_PORT);
-        logger.info("Service configuration: BankTransfer MIN_AMOUNT=" + Constants.MIN_AMOUNT + ", MAX_AMOUNT=" + Constants.MAX_AMOUNT + ", INITIAL_BALANCE=" + Constants.INITIAL_BALANCE);
-        logger.info("Service configuration: BankTransfer TIMEOUT_FREQUENCY=" + Constants.TIMEOUT_FREQUENCY + ", TIMEOUT_UNIT=" + Constants.TIMEOUT_UNIT);
+        System.out.println("You can change service configuration parameters in " + ServiceConfiguration.CONFIGURATION_FILE);
+        System.out.println("Service configuration: RMI port=" + RMI_PORT);
+        System.out.println("Service configuration: BankTransfer MIN_AMOUNT=" + Constants.MIN_AMOUNT + ", MAX_AMOUNT=" + Constants.MAX_AMOUNT + ", INITIAL_BALANCE=" + Constants.INITIAL_BALANCE);
+        System.out.println("Service configuration: BankTransfer TIMEOUT_FREQUENCY=" + Constants.TIMEOUT_FREQUENCY + ", TIMEOUT_UNIT=" + Constants.TIMEOUT_UNIT);
         if (Constants.MIN_AMOUNT >= Constants.MAX_AMOUNT || Constants.MAX_AMOUNT >= Constants.INITIAL_BALANCE) {
             logger.warn("Bank transfer properties must maintain formula [ MIN_AMOUNT < MAX_AMOUNT < INITIAL_BALANCE ] !");
             return;
         }
-        logger.info("Type in: method name,node host,node id,existing node host,existing node id");
-        logger.info("Example: create,localhost,10");
-        logger.info("Example: join,localhost,15,localhost,10");
-        logger.info("Example: join,localhost,20,localhost,15");
-        logger.info("Example: join,localhost,25,localhost,20");
-        logger.info("Example: join,localhost,30,localhost,25");
-        logger.info("Example: view");
-        logger.info("Example: cut");
+        System.out.println("Type in: method name,node host,node id,existing node host,existing node id");
+        System.out.println("Example: create,localhost,10");
+        System.out.println("Example: join,localhost,15,localhost,10");
+        System.out.println("Example: join,localhost,20,localhost,15");
+        System.out.println("Example: join,localhost,25,localhost,20");
+        System.out.println("Example: join,localhost,30,localhost,25");
+        System.out.println("Example: view");
+        System.out.println("Example: cut");
         StorageUtil.init();
         NetworkUtil.printMachineIPv4();
-        logger.info("Bank is ready for request >");
+        System.out.println("Bank is ready for request >");
         InputUtil.readInput(ServerLauncher.class.getName());
     }
 
@@ -92,9 +93,9 @@ public final class ServerLauncher {
             return;
         }
         startRMIRegistry();
-        logger.info("NodeId=" + nodeId + " is the first bank in the graph");
+        System.out.println("NodeId=" + nodeId + " is the first bank in the graph");
         node = register(nodeId, nodeHost);
-        logger.info("NodeId=" + nodeId + " is connected as first node=" + node);
+        System.out.println("NodeId=" + nodeId + " is connected as first node=" + node);
         nodeState = NodeState.CONNECTED;
         startMoneyTransferring();
     }
@@ -121,7 +122,7 @@ public final class ServerLauncher {
             return;
         }
         startRMIRegistry();
-        logger.info("NodeId=" + nodeId + " connects to existing nodeId=" + existingNodeId);
+        System.out.println("NodeId=" + nodeId + " connects to existing nodeId=" + existingNodeId);
         Node existingNode = RemoteUtil.getRemoteNode(existingNodeId, existingNodeHost).getNode();
         if (existingNode.getNodes().isEmpty()) {
             logger.warn("Existing node must be operational!");
@@ -134,7 +135,7 @@ public final class ServerLauncher {
         node = register(nodeId, nodeHost);
         node.putNodes(existingNode.getNodes());
         announceJoin();
-        logger.info("NodeId=" + nodeId + " connected as node=" + node + " from existingNode=" + existingNode);
+        System.out.println("NodeId=" + nodeId + " connected as node=" + node + " from existingNode=" + existingNode);
         nodeState = NodeState.CONNECTED;
         startMoneyTransferring();
     }
@@ -147,7 +148,7 @@ public final class ServerLauncher {
             logger.warn("Must be CONNECTED to view topology! Current nodeState=" + nodeState);
             return;
         }
-        logger.info("Viewing topology from node=" + node);
+        System.out.println("Viewing topology from node=" + node);
         node.getNodes().entrySet().forEach(n -> {
             try {
                 RemoteUtil.getRemoteNode(n.getKey(), n.getValue()).getNode();
@@ -165,7 +166,7 @@ public final class ServerLauncher {
             logger.warn("Must be CONNECTED to initiate the distributed snapshot! Current nodeState=" + nodeState);
             return;
         }
-        logger.info("Starting distributed snapshot from node=" + node);
+        System.out.println("Starting distributed snapshot from node=" + node);
         RemoteUtil.getRemoteNode(node).receiveMarker(node.getId());
     }
 
@@ -182,7 +183,7 @@ public final class ServerLauncher {
         Naming.bind("rmi://" + node.getHost() + "/NodeRemote" + node.getId(), new NodeRemote(node));
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
-                logger.info("Auto-leaving process initiated...");
+                System.out.println("Auto-leaving process initiated...");
                 try {
                     if (nodeState == NodeState.CONNECTED) {
                         leave();
@@ -199,10 +200,10 @@ public final class ServerLauncher {
      * Signals current node to leave the graph
      */
     private static void leave() throws Exception {
-        logger.info("NodeId=" + node.getId() + " is disconnecting from the graph...");
+        System.out.println("NodeId=" + node.getId() + " is disconnecting from the graph...");
         Naming.unbind("rmi://" + node.getHost() + "/NodeRemote" + node.getId());
         StorageUtil.removeFile(node.getId());
-        logger.info("NodeId=" + node.getId() + " disconnected");
+        System.out.println("NodeId=" + node.getId() + " disconnected");
         node = null;
         nodeState = NodeState.DISCONNECTED;
     }

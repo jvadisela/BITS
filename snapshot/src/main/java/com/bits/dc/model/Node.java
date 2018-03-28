@@ -1,8 +1,9 @@
-package nl.tue.ds.entity;
+package com.bits.dc.model;
 
+import com.bits.dc.Constants;
+import com.bits.dc.utils.StorageUtil;
 import com.google.common.base.MoreObjects;
-import nl.tue.ds.Constants;
-import nl.tue.ds.util.StorageUtil;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;

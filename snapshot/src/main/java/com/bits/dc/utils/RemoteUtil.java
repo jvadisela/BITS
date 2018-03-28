@@ -1,11 +1,12 @@
-package nl.tue.ds.util;
+package com.bits.dc.utils;
 
-import nl.tue.ds.entity.Node;
-import nl.tue.ds.rmi.NodeServer;
-import nl.tue.ds.rmi.NullNodeRemote;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+
+import com.bits.dc.model.Node;
+import com.bits.dc.rmi.NodeServer;
+import com.bits.dc.rmi.NullNodeRemote;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;

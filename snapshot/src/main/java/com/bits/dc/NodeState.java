@@ -1,6 +1,6 @@
-package nl.tue.ds;
+package com.bits.dc;
 
-import nl.tue.ds.entity.Node;
+import com.bits.dc.model.Node;
 
 /**
  * Represents different states the node can be in

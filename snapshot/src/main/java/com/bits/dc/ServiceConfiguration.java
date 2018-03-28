@@ -1,4 +1,4 @@
-package nl.tue.ds;
+package com.bits.dc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

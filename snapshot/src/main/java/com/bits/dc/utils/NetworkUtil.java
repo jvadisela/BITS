@@ -1,4 +1,4 @@
-package nl.tue.ds.util;
+package com.bits.dc.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,14 +22,14 @@ public abstract class NetworkUtil {
      */
     public static void printMachineIPv4() {
         try {
-            logger.info("Printing all possible IPv4 of your machine:");
+            System.out.println("Printing all possible IPv4 of your machine:");
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
             while (networkInterfaces.hasMoreElements()) {
                 Enumeration<InetAddress> inetAddresses = networkInterfaces.nextElement().getInetAddresses();
                 while (inetAddresses.hasMoreElements()) {
                     String hostAddress = inetAddresses.nextElement().getHostAddress();
                     if (hostAddress.contains(".") && !hostAddress.equals(LOCALHOST)) {
-                        logger.info(hostAddress);
+                        System.out.println(hostAddress);
                     }
                 }
             }

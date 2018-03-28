@@ -1,4 +1,4 @@
-package nl.tue.ds;
+package com.bits.dc;
 
 /**
  * Holds bank transfer properties defined in "service.configuration"

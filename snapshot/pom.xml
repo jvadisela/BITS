@@ -70,7 +70,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>nl.tue.ds.ServerLauncher</mainClass>
+                                    <mainClass>com.bits.dc.ServerLauncher</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>
