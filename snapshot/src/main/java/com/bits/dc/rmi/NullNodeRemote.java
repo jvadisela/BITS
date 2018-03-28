@@ -1,21 +1,21 @@
 package com.bits.dc.rmi;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.bits.dc.model.Node;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-
 /**
  * Used to simulate crashed node or in case of network errors
  */
-public final class NullNodeRemote extends UnicastRemoteObject implements NodeServer {
+public final class NullNodeRemote extends UnicastRemoteObject implements IServer {
 
     @NotNull
     private final Node node;
 
-    public NullNodeRemote(@NotNull Node node) throws RemoteException {
+    public NullNodeRemote(Node node) throws RemoteException {
         this.node = node;
     }
 
@@ -26,7 +26,7 @@ public final class NullNodeRemote extends UnicastRemoteObject implements NodeSer
     }
 
     @Override
-    public void addNode(int id, @NotNull String host) throws RemoteException {
+    public void addNode(int id, String host) throws RemoteException {
     }
 
     @Override

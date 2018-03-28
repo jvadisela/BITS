@@ -1,13 +1,5 @@
 package com.bits.dc.rmi;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-
-import com.bits.dc.model.Node;
-import com.bits.dc.model.Snapshot;
-import com.bits.dc.utils.RMIUtils;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Arrays;
@@ -15,6 +7,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+
+import com.bits.dc.model.Node;
+import com.bits.dc.model.Snapshot;
+import com.bits.dc.utils.RMIUtils;
 
 /**
  * Provides an access to remote node via RMI
@@ -28,7 +28,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @see java.util.concurrent.locks.ReadWriteLock
  * @see java.util.concurrent.locks.ReentrantReadWriteLock
  */
-public final class NodeRemote extends UnicastRemoteObject implements NodeServer {
+public final class RemoteNode extends UnicastRemoteObject implements IServer {
 
     private static final Logger logger = LogManager.getLogger();
 
@@ -55,7 +55,7 @@ public final class NodeRemote extends UnicastRemoteObject implements NodeServer 
     @NotNull
     private final Node node;
 
-    public NodeRemote(@NotNull Node node) throws RemoteException {
+    public RemoteNode(Node node) throws RemoteException {
         this.node = node;
     }
 
@@ -67,7 +67,7 @@ public final class NodeRemote extends UnicastRemoteObject implements NodeServer 
     }
 
     @Override
-    public void addNode(int id, @NotNull String host) throws RemoteException {
+    public void addNode(int id, String host) throws RemoteException {
         nodesLock.writeLock().lock();
         try {
             System.out.println("Add id=" + id + ", host=" + host);
@@ -121,7 +121,7 @@ public final class NodeRemote extends UnicastRemoteObject implements NodeServer 
         itemTransferLock.writeLock().lock();
         try {
             System.out.println("Received marker from nodeId=" + nodeId);
-            @NotNull Snapshot snapshot = node.getSnapshot();
+            Snapshot snapshot = node.getSnapshot();
             if (!snapshot.isRecording()) {
                 node.startSnapshotRecording();
                 System.out.println("Broadcasting marker to neighbours");

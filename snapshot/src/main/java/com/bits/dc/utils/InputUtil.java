@@ -1,12 +1,11 @@
 package com.bits.dc.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Convenient class to work with infinite Scanner Input and invoking class methods with parameters
@@ -31,7 +30,7 @@ public abstract class InputUtil {
      *
      * @param className of the class to invoke public static methods in
      */
-    public static void readInput(@NotNull String className) {
+    public static void readInput(String className) {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
             String[] commands = scanner.nextLine().split(SEPARATOR);

@@ -1,11 +1,14 @@
 package com.bits.dc.model;
 
-import com.google.common.base.MoreObjects;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.Serializable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.google.common.base.MoreObjects;
 
 /**
  * Distributed Snapshot associated with the node
@@ -36,7 +39,7 @@ public final class Snapshot implements Serializable {
      * <p>
      * Map<NodeId>
      */
-    private final @NotNull Set<Integer> unrecordedChannels = new HashSet<>();
+    private final Set<Integer> unrecordedChannels = new HashSet<>();
 
     public void startSnapshotRecording(int nodeId, int balance, Map<Integer, String> nodes) {
         id++;

@@ -51,7 +51,7 @@ public final class Node implements Serializable {
         this(0, "");
     }
 
-    public Node(int id, @NotNull String host) {
+    public Node(int id, String host) {
         this.id = id;
         this.host = host;
         item = new Item(Constants.INITIAL_BALANCE);
@@ -85,11 +85,11 @@ public final class Node implements Serializable {
         snapshot.stopSnapshotRecording();
     }
 
-    public void putNodes(@NotNull Map<Integer, String> nodes) {
+    public void putNodes(Map<Integer, String> nodes) {
         this.nodes.putAll(nodes);
     }
 
-    public void putNode(int id, @NotNull String host) {
+    public void putNode(int id, String host) {
         nodes.put(id, host);
     }
 

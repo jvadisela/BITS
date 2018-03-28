@@ -1,18 +1,18 @@
 package com.bits.dc.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-
-import com.bits.dc.model.Node;
-import com.bits.dc.model.Snapshot;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+
+import com.bits.dc.model.Node;
+import com.bits.dc.model.Snapshot;
 
 /**
  * Convenient class to work with Node's internal list of snapshots
@@ -33,9 +33,9 @@ public abstract class StorageUtil {
      *
      * @param node to write
      */
-    public static void write(@NotNull Node node) {
+    public static void write(Node node) {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(getFileName(node.getId()), true)))) {
-            @NotNull Snapshot snapshot = node.getSnapshot();
+            Snapshot snapshot = node.getSnapshot();
             writer.println(snapshot.getId() + SEPARATOR + snapshot.getLocalBalance() + SEPARATOR + snapshot.getMoneyInTransfer());
             System.out.println("Storage wrote a snapshot=" + snapshot);
         } catch (Exception e) {

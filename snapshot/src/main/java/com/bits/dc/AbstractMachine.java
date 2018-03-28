@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.bits.dc.model.Node;
-import com.bits.dc.rmi.NodeRemote;
+import com.bits.dc.rmi.RemoteNode;
 import com.bits.dc.utils.RMIUtils;
 import com.bits.dc.utils.StorageUtil;
 
@@ -45,7 +45,7 @@ public class AbstractMachine {
 	 * @param nodeId
 	 *            id for new current node
 	 */
-	public static void create(@NotNull String nodeHost, int nodeId) throws Exception {
+	public static void create(String nodeHost, int nodeId) throws Exception {
 		if (nodeState != NodeState.DISCONNECTED) {
 			logger.warn("Must be DISCONNECTED to create! Current nodeState=" + nodeState);
 			return;
@@ -78,7 +78,7 @@ public class AbstractMachine {
 	 * @param existingNodeId
 	 *            of node in the graph to fetch data from
 	 */
-	public static void join(@NotNull String nodeHost, int nodeId, @NotNull String existingNodeHost, int existingNodeId)
+	public static void join(String nodeHost, int nodeId, String existingNodeHost, int existingNodeId)
 			throws Exception {
 		if (nodeState != NodeState.DISCONNECTED) {
 			logger.warn("Must be DISCONNECTED to join! Current nodeState=" + nodeState);
@@ -147,10 +147,10 @@ public class AbstractMachine {
 	 *            of the new node
 	 */
 	@NotNull
-	private static Node register(int id, @NotNull String host) throws Exception {
+	private static Node register(int id, String host) throws Exception {
 		System.setProperty("java.rmi.server.hostname", host);
 		Node node = new Node(id, host);
-		Naming.bind("rmi://" + node.getHost() + "/NodeRemote" + node.getId(), new NodeRemote(node));
+		Naming.bind("rmi://" + node.getHost() + "/NodeRemote" + node.getId(), new RemoteNode(node));
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				System.out.println("Auto-leaving process initiated...");

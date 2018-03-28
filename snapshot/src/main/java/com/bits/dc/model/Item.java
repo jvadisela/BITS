@@ -1,9 +1,9 @@
 package com.bits.dc.model;
 
-import com.google.common.base.MoreObjects;
-
 import java.io.Serializable;
 import java.util.Objects;
+
+import com.google.common.base.MoreObjects;
 
 /**
  * Items represent an entity hold by the bank (balance in our case) and associated to nodes by one-to-one relation

@@ -1,15 +1,15 @@
 package com.bits.dc.utils;
 
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import com.bits.dc.model.Node;
-import com.bits.dc.rmi.NodeServer;
+import com.bits.dc.rmi.IServer;
 import com.bits.dc.rmi.NullNodeRemote;
-
-import java.rmi.Naming;
-import java.rmi.RemoteException;
 
 /**
  * Convenient class to deal with RMI for nodes
@@ -25,7 +25,7 @@ public abstract class RMIUtils {
      * @return reference to remote object
      */
     @NotNull
-    public static NodeServer getRemoteNode(@NotNull Node node) {
+    public static IServer getRemoteNode(Node node) {
         return getRemoteNode(node.getId(), node.getHost());
     }
 
@@ -37,9 +37,9 @@ public abstract class RMIUtils {
      * @return reference to remote object
      */
     @NotNull
-    public static NodeServer getRemoteNode(int id, @NotNull String host) {
+    public static IServer getRemoteNode(int id, String host) {
         try {
-            return (NodeServer) Naming.lookup("rmi://" + host + "/NodeRemote" + id);
+            return (IServer) Naming.lookup("rmi://" + host + "/NodeRemote" + id);
         } catch (Exception e) {
             logger.error("Failed to get remote interface for id=" + id, e);
             try {
