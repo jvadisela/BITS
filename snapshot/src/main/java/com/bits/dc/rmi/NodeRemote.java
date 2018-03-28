@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.bits.dc.model.Node;
 import com.bits.dc.model.Snapshot;
-import com.bits.dc.utils.RemoteUtil;
+import com.bits.dc.utils.RMIUtils;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -85,7 +85,7 @@ public final class NodeRemote extends UnicastRemoteObject implements NodeServer 
             boolean isWithdraw = node.getItem().decrementBalance(amount);
             if (isWithdraw) {
                 System.out.println("Transferring amount=" + amount + " to recipientNodeId=" + recipientNodeId);
-                boolean isAccepted = RemoteUtil.getRemoteNode(recipientNodeId, node.getNodes().get(recipientNodeId)).acceptMoney(node.getId(), amount);
+                boolean isAccepted = RMIUtils.getRemoteNode(recipientNodeId, node.getNodes().get(recipientNodeId)).acceptMoney(node.getId(), amount);
                 if (isAccepted) {
                     System.out.println("Transferred amount=" + amount + " to recipientNodeId=" + recipientNodeId);
                 } else {
@@ -129,7 +129,7 @@ public final class NodeRemote extends UnicastRemoteObject implements NodeServer 
                 node.getNodes().entrySet().parallelStream().filter(n -> n.getKey() != node.getId()).forEach(entry -> {
                     executorService.execute(() -> {
                         try {
-                            RemoteUtil.getRemoteNode(entry.getKey(), entry.getValue()).receiveMarker(node.getId());
+                            RMIUtils.getRemoteNode(entry.getKey(), entry.getValue()).receiveMarker(node.getId());
                             System.out.println("Marker sent to nodeId=" + entry.getKey());
                         } catch (RemoteException e) {
                             logger.error("Failed to sent marker to nodeId=" + entry.getKey(), e);

@@ -14,7 +14,7 @@ import java.rmi.RemoteException;
 /**
  * Convenient class to deal with RMI for nodes
  */
-public abstract class RemoteUtil {
+public abstract class RMIUtils {
 
     private static final Logger logger = LogManager.getLogger();
 
