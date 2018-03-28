@@ -4,9 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-/**
- * Reads property file with service configuration
- */
 public abstract class ServiceConfiguration {
 
     public static final String CONFIGURATION_FILE = "service.properties";

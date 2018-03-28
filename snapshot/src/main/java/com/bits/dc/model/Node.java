@@ -11,42 +11,16 @@ import com.bits.dc.Constants;
 import com.bits.dc.utils.StorageUtil;
 import com.google.common.base.MoreObjects;
 
-/**
- * Nodes are represented as banks in distributed environment and are interconnected in peer-to-peer fashion
- * <p>
- * Nodes form a digraph, consisting of one strongly connected component
- */
 public final class Node implements Serializable {
 
-    /**
-     * Positive integer to determine position in the graph
-     */
     private final int id;
 
-    /**
-     * IP address of the server node
-     */
-    
     private final String host;
 
-    /**
-     * Current state of the bank
-     */
-    
     private final Item item;
 
-    /**
-     * Snapshot record of the bank
-     */
-    
     private final Snapshot snapshot;
 
-    /**
-     * All known nodes in the graph, including itself
-     * <p>
-     * Map<NodeId, Host>
-     */
-    
     private final Map<Integer, String> nodes = new HashMap<>();
 
     public Node() {

@@ -7,30 +7,12 @@ import com.bits.dc.model.Node;
 import com.bits.dc.rmi.IServer;
 import com.bits.dc.rmi.NullNodeRemote;
 
-/**
- * Convenient class to deal with RMI for nodes
- */
 public abstract class RMIUtils {
 
-    /**
-     * Get reference to remote node
-     *
-     * @param node remote node
-     * @return reference to remote object
-     */
-    
     public static IServer getRemoteNode(Node node) {
         return getRemoteNode(node.getId(), node.getHost());
     }
 
-    /**
-     * Get reference to remote node
-     *
-     * @param id   of the node
-     * @param host of the node
-     * @return reference to remote object
-     */
-    
     public static IServer getRemoteNode(int id, String host) {
         try {
             return (IServer) Naming.lookup("rmi://" + host + "/NodeRemote" + id);

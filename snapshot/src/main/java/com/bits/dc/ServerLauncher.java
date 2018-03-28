@@ -1,15 +1,8 @@
 package com.bits.dc;
 
-import com.bits.dc.model.Node;
 import com.bits.dc.utils.InputUtil;
 import com.bits.dc.utils.StorageUtil;
 
-/**
- * Simulates server node (bank) in the graph for distributed snapshot
- *
- * @see Node
- * @see ServiceConfiguration
- */
 public final class ServerLauncher extends AbstractMachine {
 
     /**

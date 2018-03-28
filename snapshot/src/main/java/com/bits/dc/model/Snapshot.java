@@ -10,35 +10,14 @@ import java.util.stream.Collectors;
 
 import com.google.common.base.MoreObjects;
 
-/**
- * Distributed Snapshot associated with the node
- *
- * @see Node
- */
 public final class Snapshot implements Serializable {
 
-    /**
-     * Sequential number, current snapshot ID to be taken
-     */
     private int id;
 
-    /**
-     * Current amount of money at the bank
-     */
     private int localBalance;
 
-    /**
-     * All money transfers from incoming channels upon receiving the marker
-     */
     private int moneyInTransfer;
 
-    /**
-     * Incoming nodes to be recorded for distributed snapshot
-     * holds only node ids from where the marker has not arrived yet
-     * if collection is empty -> all markers are received
-     * <p>
-     * Map<NodeId>
-     */
     private final Set<Integer> unrecordedChannels = new HashSet<>();
 
     public void startSnapshotRecording(int nodeId, int balance, Map<Integer, String> nodes) {
@@ -66,12 +45,6 @@ public final class Snapshot implements Serializable {
         return moneyInTransfer;
     }
 
-    /**
-     * Increments the money-in-transfer upon receiving the marker from that node
-     *
-     * @param recipientNodeId recipient of the money transfer
-     * @param amount          of the money transfer
-     */
     public void incrementMoneyInTransfer(int recipientNodeId, int amount) {
         if (unrecordedChannels.contains(recipientNodeId)) {
             moneyInTransfer += amount;

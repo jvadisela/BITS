@@ -5,22 +5,10 @@ import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
 
-/**
- * Items represent an entity hold by the bank (balance in our case) and associated to nodes by one-to-one relation
- *
- * @see Node
- */
 public final class Item implements Serializable {
 
-    /**
-     * Current amount of money at the bank
-     */
     private int balance;
 
-    /**
-     * Temp variable for holding withdraw money amount with possibility to restore
-     * holds under assumption that only one money transfer is done at a time
-     */
     private int withdrawAmount;
 
     public Item(int balance) {
@@ -40,13 +28,6 @@ public final class Item implements Serializable {
         withdrawAmount = 0;
     }
 
-    /**
-     * Checks if current balance is over or equal the amount to be deducted
-     * if it is -> deducts the money, if not -> balance stay untouched
-     *
-     * @param amount to be deducted
-     * @return whether operation succeed or not
-     */
     public boolean decrementBalance(int amount) {
         if (balance >= amount) {
             balance -= amount;

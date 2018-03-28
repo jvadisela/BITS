@@ -5,9 +5,6 @@ import java.rmi.server.UnicastRemoteObject;
 
 import com.bits.dc.model.Node;
 
-/**
- * Used to simulate crashed node or in case of network errors
- */
 public final class NullNodeRemote extends UnicastRemoteObject implements IServer {
 
     

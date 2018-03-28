@@ -5,13 +5,6 @@ import com.bits.dc.utils.StorageUtil;
 
 public class Client extends AbstractMachine {
 
-	/**
-	 * Description: method name,node host,node id,existing node host,existing
-	 * node id Example: join,localhost,10,none,0 Example:
-	 * join,localhost,15,localhost,10 Example: join,localhost,20,localhost,15
-	 * Example: join,localhost,25,localhost,20 Example:
-	 * join,localhost,20,localhost,25 Example: view Example: cut
-	 */
 	public static void main(String[] args) {
 		System.out.println(
 				"You can change service configuration parameters in " + ServiceConfiguration.CONFIGURATION_FILE);
