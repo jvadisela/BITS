@@ -8,58 +8,27 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-
 import com.bits.dc.model.Node;
 import com.bits.dc.model.Snapshot;
 import com.bits.dc.utils.RMIUtils;
 
-/**
- * Provides an access to remote node via RMI
- * <p>
- * Uses read/write locks for manipulation with internal data structure of the node in case of multiple requests
- * <p>
- * Read Lock: multiple readers can enter, if not locked for writing
- * Write Lock: only one writer can enter, if not locked for reading
- *
- * @see Node
- * @see java.util.concurrent.locks.ReadWriteLock
- * @see java.util.concurrent.locks.ReentrantReadWriteLock
- */
 public final class RemoteNode extends UnicastRemoteObject implements IServer {
 
-    private static final Logger logger = LogManager.getLogger();
+	private static final long serialVersionUID = 3871533811290162457L;
 
-    /**
-     * Locks operations over the nodes
-     */
     private static final ReadWriteLock nodesLock = new ReentrantReadWriteLock();
-
-    /**
-     * Locks operations over the item
-     */
     private static final ReadWriteLock itemTransferLock = new ReentrantReadWriteLock();
-
-    /**
-     * Locks operations over the item
-     */
     private static final ReadWriteLock itemAcceptLock = new ReentrantReadWriteLock();
-
-    /**
-     * Locks operations over the marker
-     */
     private static final ReadWriteLock markerLock = new ReentrantReadWriteLock();
 
-    @NotNull
+    
     private final Node node;
 
     public RemoteNode(Node node) throws RemoteException {
         this.node = node;
     }
 
-    @NotNull
+    
     @Override
     public Node getNode() throws RemoteException {
         System.out.println("Get node=" + node);
@@ -132,7 +101,8 @@ public final class RemoteNode extends UnicastRemoteObject implements IServer {
                             RMIUtils.getRemoteNode(entry.getKey(), entry.getValue()).receiveMarker(node.getId());
                             System.out.println("Marker sent to nodeId=" + entry.getKey());
                         } catch (RemoteException e) {
-                            logger.error("Failed to sent marker to nodeId=" + entry.getKey(), e);
+                            System.out.println("Failed to sent marker to nodeId=" + entry.getKey());
+                            e.printStackTrace();
                         }
                     });
                 });

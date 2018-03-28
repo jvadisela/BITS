@@ -7,10 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
-
 import com.bits.dc.model.Node;
 import com.bits.dc.model.Snapshot;
 
@@ -22,10 +18,7 @@ import com.bits.dc.model.Snapshot;
  */
 public abstract class StorageUtil {
 
-    private static final Logger logger = LogManager.getLogger();
-
     private static final String SEPARATOR = ",";
-
     private static final String STORAGE_FOLDER = "storage";
 
     /**
@@ -39,7 +32,8 @@ public abstract class StorageUtil {
             writer.println(snapshot.getId() + SEPARATOR + snapshot.getLocalBalance() + SEPARATOR + snapshot.getMoneyInTransfer());
             System.out.println("Storage wrote a snapshot=" + snapshot);
         } catch (Exception e) {
-            logger.error("Failed to write snapshot of node=" + node, e);
+            System.out.println("Failed to write snapshot of node=" + node);
+            e.printStackTrace();
         }
     }
 
@@ -53,7 +47,9 @@ public abstract class StorageUtil {
                 Files.createDirectory(path);
             }
         } catch (Exception e) {
-            logger.error("Failed to create storage directory", e);
+            System.out.println("Failed to create storage directory");
+            e.printStackTrace();
+
         }
     }
 
@@ -69,11 +65,12 @@ public abstract class StorageUtil {
                 Files.delete(path);
             }
         } catch (Exception e) {
-            logger.error("Failed to remove file for nodeId=" + nodeId, e);
+        	System.out.println("Failed to remove file for nodeId=" + nodeId);
+        	e.printStackTrace();
         }
     }
 
-    @NotNull
+    
     private static String getFileName(int nodeId) {
         return STORAGE_FOLDER + "/Node-" + nodeId + ".csv";
     }

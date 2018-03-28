@@ -4,15 +4,10 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 /**
  * Convenient class to work with infinite Scanner Input and invoking class methods with parameters
  */
 public abstract class InputUtil {
-
-    private static final Logger logger = LogManager.getLogger();
 
     private static final String SEPARATOR = ",";
 
@@ -50,7 +45,8 @@ public abstract class InputUtil {
             try {
                 Class.forName(className).getMethod(commands[0], methodParameterTypes).invoke(null, params);
             } catch (Exception e) {
-                logger.error("Input scanner error", e);
+            	System.out.println("Input scanner error");
+            	e.printStackTrace();
             }
         }
     }

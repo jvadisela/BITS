@@ -1,13 +1,15 @@
 package com.bits.dc.model;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
 import com.bits.dc.Constants;
 import com.bits.dc.utils.StorageUtil;
 import com.google.common.base.MoreObjects;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.io.Serializable;
-import java.util.*;
 
 /**
  * Nodes are represented as banks in distributed environment and are interconnected in peer-to-peer fashion
@@ -24,19 +26,19 @@ public final class Node implements Serializable {
     /**
      * IP address of the server node
      */
-    @NotNull
+    
     private final String host;
 
     /**
      * Current state of the bank
      */
-    @NotNull
+    
     private final Item item;
 
     /**
      * Snapshot record of the bank
      */
-    @NotNull
+    
     private final Snapshot snapshot;
 
     /**
@@ -44,7 +46,7 @@ public final class Node implements Serializable {
      * <p>
      * Map<NodeId, Host>
      */
-    @NotNull
+    
     private final Map<Integer, String> nodes = new HashMap<>();
 
     public Node() {
@@ -63,12 +65,12 @@ public final class Node implements Serializable {
         return id;
     }
 
-    @NotNull
+    
     public Item getItem() {
         return item;
     }
 
-    @NotNull
+    
     public Snapshot getSnapshot() {
         return snapshot;
     }
@@ -93,7 +95,7 @@ public final class Node implements Serializable {
         nodes.put(id, host);
     }
 
-    @NotNull
+    
     public String getHost() {
         return host;
     }

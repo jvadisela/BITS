@@ -3,8 +3,6 @@ package com.bits.dc.rmi;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.bits.dc.model.Node;
 
 /**
@@ -12,14 +10,14 @@ import com.bits.dc.model.Node;
  */
 public final class NullNodeRemote extends UnicastRemoteObject implements IServer {
 
-    @NotNull
+    
     private final Node node;
 
     public NullNodeRemote(Node node) throws RemoteException {
         this.node = node;
     }
 
-    @NotNull
+    
     @Override
     public Node getNode() throws RemoteException {
         return node;

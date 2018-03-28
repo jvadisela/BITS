@@ -10,9 +10,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.bits.dc.model.Node;
@@ -21,8 +18,6 @@ import com.bits.dc.utils.RMIUtils;
 import com.bits.dc.utils.StorageUtil;
 
 public class AbstractMachine {
-
-	private static final Logger logger = LogManager.getLogger();
 
 	static final int RMI_PORT = ServiceConfiguration.getRmiPort();
 
@@ -47,11 +42,11 @@ public class AbstractMachine {
 	 */
 	public static void create(String nodeHost, int nodeId) throws Exception {
 		if (nodeState != NodeState.DISCONNECTED) {
-			logger.warn("Must be DISCONNECTED to create! Current nodeState=" + nodeState);
+			System.out.println("Must be DISCONNECTED to create! Current nodeState=" + nodeState);
 			return;
 		}
 		if (nodeId <= 0) {
-			logger.warn("Node id must be positive integer [ nodeID > 0 ] !");
+			System.out.println("Node id must be positive integer [ nodeID > 0 ] !");
 			return;
 		}
 		startRMIRegistry();
@@ -81,22 +76,22 @@ public class AbstractMachine {
 	public static void join(String nodeHost, int nodeId, String existingNodeHost, int existingNodeId)
 			throws Exception {
 		if (nodeState != NodeState.DISCONNECTED) {
-			logger.warn("Must be DISCONNECTED to join! Current nodeState=" + nodeState);
+			System.out.println("Must be DISCONNECTED to join! Current nodeState=" + nodeState);
 			return;
 		}
 		if (nodeId <= 0) {
-			logger.warn("Node id must be positive integer [ nodeID > 0 ] !");
+			System.out.println("Node id must be positive integer [ nodeID > 0 ] !");
 			return;
 		}
 		startRMIRegistry();
 		System.out.println("NodeId=" + nodeId + " connects to existing nodeId=" + existingNodeId);
 		Node existingNode = RMIUtils.getRemoteNode(existingNodeId, existingNodeHost).getNode();
 		if (existingNode.getNodes().isEmpty()) {
-			logger.warn("Existing node must be operational!");
+			System.out.println("Existing node must be operational!");
 			return;
 		}
 		if (existingNode.getNodes().containsKey(nodeId)) {
-			logger.warn("Cannot join as nodeId=" + nodeId + " already taken!");
+			System.out.println("Cannot join as nodeId=" + nodeId + " already taken!");
 			return;
 		}
 		node = register(nodeId, nodeHost);
@@ -112,7 +107,7 @@ public class AbstractMachine {
 	 */
 	public static void view() throws RemoteException {
 		if (nodeState != NodeState.CONNECTED) {
-			logger.warn("Must be CONNECTED to view topology! Current nodeState=" + nodeState);
+			System.out.println("Must be CONNECTED to view topology! Current nodeState=" + nodeState);
 			return;
 		}
 		System.out.println("Viewing topology from node=" + node);
@@ -131,7 +126,7 @@ public class AbstractMachine {
 	 */
 	public static void cut() throws RemoteException {
 		if (nodeState != NodeState.CONNECTED) {
-			logger.warn("Must be CONNECTED to initiate the distributed snapshot! Current nodeState=" + nodeState);
+			System.out.println("Must be CONNECTED to initiate the distributed snapshot! Current nodeState=" + nodeState);
 			return;
 		}
 		System.out.println("Starting distributed snapshot from node=" + node);
@@ -146,7 +141,7 @@ public class AbstractMachine {
 	 * @param host
 	 *            of the new node
 	 */
-	@NotNull
+	
 	private static Node register(int id, String host) throws Exception {
 		System.setProperty("java.rmi.server.hostname", host);
 		Node node = new Node(id, host);
@@ -159,7 +154,8 @@ public class AbstractMachine {
 						leave();
 					}
 				} catch (Exception e) {
-					logger.error("Failed to leave node", e);
+					System.out.println("Failed to leave node");
+					e.printStackTrace();
 				}
 			}
 		});
@@ -202,7 +198,8 @@ public class AbstractMachine {
 					RMIUtils.getRemoteNode(node).transferMoney(randomNode.getId(), randomAmount);
 				}
 			} catch (RemoteException e) {
-				logger.error("Failed to transfer to random node!", e);
+				System.out.println("Failed to transfer to random node!");
+				e.printStackTrace();
 			}
 		}, 0, Constants.TIMEOUT_FREQUENCY, TimeUnit.valueOf(Constants.TIMEOUT_UNIT));
 	}
