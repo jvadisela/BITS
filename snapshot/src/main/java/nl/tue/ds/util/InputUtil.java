@@ -47,7 +47,7 @@ public abstract class InputUtil {
                     methodParameterTypes[param] = String.class;
                 }
             }
-            logger.debug("Calling method=" + commands[0] + Arrays.toString(params));
+            System.out.println("Calling method=" + commands[0] + Arrays.toString(params));
             try {
                 Class.forName(className).getMethod(commands[0], methodParameterTypes).invoke(null, params);
             } catch (Exception e) {

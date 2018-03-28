@@ -7,7 +7,7 @@ package nl.tue.ds;
  *
  * @see ServiceConfiguration
  */
-public interface BankTransfer {
+public interface Constants {
 
     /**
      * Initial amount at bank account

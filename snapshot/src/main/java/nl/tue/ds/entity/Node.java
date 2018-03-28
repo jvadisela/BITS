@@ -1,7 +1,7 @@
 package nl.tue.ds.entity;
 
 import com.google.common.base.MoreObjects;
-import nl.tue.ds.BankTransfer;
+import nl.tue.ds.Constants;
 import nl.tue.ds.util.StorageUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,7 +53,7 @@ public final class Node implements Serializable {
     public Node(int id, @NotNull String host) {
         this.id = id;
         this.host = host;
-        item = new Item(BankTransfer.INITIAL_BALANCE);
+        item = new Item(Constants.INITIAL_BALANCE);
         snapshot = new Snapshot();
         nodes.put(id, host);
     }

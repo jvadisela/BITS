@@ -56,9 +56,9 @@ public final class ServerLauncher {
     public static void main(String[] args) {
         logger.info("You can change service configuration parameters in " + ServiceConfiguration.CONFIGURATION_FILE);
         logger.info("Service configuration: RMI port=" + RMI_PORT);
-        logger.info("Service configuration: BankTransfer MIN_AMOUNT=" + BankTransfer.MIN_AMOUNT + ", MAX_AMOUNT=" + BankTransfer.MAX_AMOUNT + ", INITIAL_BALANCE=" + BankTransfer.INITIAL_BALANCE);
-        logger.info("Service configuration: BankTransfer TIMEOUT_FREQUENCY=" + BankTransfer.TIMEOUT_FREQUENCY + ", TIMEOUT_UNIT=" + BankTransfer.TIMEOUT_UNIT);
-        if (BankTransfer.MIN_AMOUNT >= BankTransfer.MAX_AMOUNT || BankTransfer.MAX_AMOUNT >= BankTransfer.INITIAL_BALANCE) {
+        logger.info("Service configuration: BankTransfer MIN_AMOUNT=" + Constants.MIN_AMOUNT + ", MAX_AMOUNT=" + Constants.MAX_AMOUNT + ", INITIAL_BALANCE=" + Constants.INITIAL_BALANCE);
+        logger.info("Service configuration: BankTransfer TIMEOUT_FREQUENCY=" + Constants.TIMEOUT_FREQUENCY + ", TIMEOUT_UNIT=" + Constants.TIMEOUT_UNIT);
+        if (Constants.MIN_AMOUNT >= Constants.MAX_AMOUNT || Constants.MAX_AMOUNT >= Constants.INITIAL_BALANCE) {
             logger.warn("Bank transfer properties must maintain formula [ MIN_AMOUNT < MAX_AMOUNT < INITIAL_BALANCE ] !");
             return;
         }
@@ -211,11 +211,11 @@ public final class ServerLauncher {
      * Announce JOIN operation to the nodes in the graph
      */
     private static void announceJoin() throws RemoteException {
-        logger.debug("Announcing join to nodes=" + Arrays.toString(node.getNodes().entrySet().toArray()));
+        System.out.println("Announcing join to nodes=" + Arrays.toString(node.getNodes().entrySet().toArray()));
         node.getNodes().entrySet().parallelStream().filter(n -> n.getKey() != node.getId()).forEach(n -> {
             try {
                 RemoteUtil.getRemoteNode(n.getKey(), n.getValue()).addNode(node.getId(), node.getHost());
-                logger.trace("Announced join to nodeId=" + n.getKey());
+                System.out.println("Announced join to nodeId=" + n.getKey());
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -227,13 +227,13 @@ public final class ServerLauncher {
             try {
                 if (node != null && node.getNodes().size() > 1) {
                     Node randomNode = getRandomNode();
-                    int randomAmount = new Random().nextInt(BankTransfer.MAX_AMOUNT + 1) + BankTransfer.MIN_AMOUNT;
+                    int randomAmount = new Random().nextInt(Constants.MAX_AMOUNT + 1) + Constants.MIN_AMOUNT;
                     RemoteUtil.getRemoteNode(node).transferMoney(randomNode.getId(), randomAmount);
                 }
             } catch (RemoteException e) {
                 logger.error("Failed to transfer to random node!", e);
             }
-        }, 0, BankTransfer.TIMEOUT_FREQUENCY, TimeUnit.valueOf(BankTransfer.TIMEOUT_UNIT));
+        }, 0, Constants.TIMEOUT_FREQUENCY, TimeUnit.valueOf(Constants.TIMEOUT_UNIT));
     }
 
     /**

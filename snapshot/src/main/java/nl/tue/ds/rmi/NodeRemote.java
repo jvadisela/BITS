@@ -61,7 +61,7 @@ public final class NodeRemote extends UnicastRemoteObject implements NodeServer 
     @NotNull
     @Override
     public Node getNode() throws RemoteException {
-        logger.debug("Get node=" + node);
+        System.out.println("Get node=" + node);
         return node;
     }
 
@@ -69,9 +69,9 @@ public final class NodeRemote extends UnicastRemoteObject implements NodeServer 
     public void addNode(int id, @NotNull String host) throws RemoteException {
         nodesLock.writeLock().lock();
         try {
-            logger.debug("Add id=" + id + ", host=" + host);
+            System.out.println("Add id=" + id + ", host=" + host);
             node.putNode(id, host);
-            logger.debug("Current nodes=" + Arrays.toString(node.getNodes().entrySet().toArray()));
+            System.out.println("Current nodes=" + Arrays.toString(node.getNodes().entrySet().toArray()));
         } finally {
             nodesLock.writeLock().unlock();
         }
@@ -83,16 +83,16 @@ public final class NodeRemote extends UnicastRemoteObject implements NodeServer 
         try {
             boolean isWithdraw = node.getItem().decrementBalance(amount);
             if (isWithdraw) {
-                logger.trace("Transferring amount=" + amount + " to recipientNodeId=" + recipientNodeId);
+                System.out.println("Transferring amount=" + amount + " to recipientNodeId=" + recipientNodeId);
                 boolean isAccepted = RemoteUtil.getRemoteNode(recipientNodeId, node.getNodes().get(recipientNodeId)).acceptMoney(node.getId(), amount);
                 if (isAccepted) {
-                    logger.trace("Transferred amount=" + amount + " to recipientNodeId=" + recipientNodeId);
+                    System.out.println("Transferred amount=" + amount + " to recipientNodeId=" + recipientNodeId);
                 } else {
                     node.getItem().restoreBalance();
-                    logger.trace("NOT Transferred amount=" + amount + " to recipientNodeId=" + recipientNodeId);
+                    System.out.println("NOT Transferred amount=" + amount + " to recipientNodeId=" + recipientNodeId);
                 }
             } else {
-                logger.trace("NOT Withdraw money amount=" + amount);
+                System.out.println("NOT Withdraw money amount=" + amount);
             }
         } finally {
             itemTransferLock.writeLock().unlock();
@@ -103,10 +103,10 @@ public final class NodeRemote extends UnicastRemoteObject implements NodeServer 
     public boolean acceptMoney(int senderNodeId, int amount) throws RemoteException {
         itemAcceptLock.writeLock().lock();
         try {
-            logger.trace("Accepting money amount=" + amount + " from senderNodeId=" + senderNodeId);
+            System.out.println("Accepting money amount=" + amount + " from senderNodeId=" + senderNodeId);
             node.getSnapshot().incrementMoneyInTransfer(senderNodeId, amount);
             node.getItem().incrementBalance(amount);
-            logger.trace("Accepted, new balance=" + node.getItem().getBalance());
+            System.out.println("Accepted, new balance=" + node.getItem().getBalance());
             return true;
         } finally {
             itemAcceptLock.writeLock().unlock();
@@ -119,17 +119,17 @@ public final class NodeRemote extends UnicastRemoteObject implements NodeServer 
         itemAcceptLock.writeLock().lock();
         itemTransferLock.writeLock().lock();
         try {
-            logger.debug("Received marker from nodeId=" + nodeId);
+            System.out.println("Received marker from nodeId=" + nodeId);
             @NotNull Snapshot snapshot = node.getSnapshot();
             if (!snapshot.isRecording()) {
                 node.startSnapshotRecording();
-                logger.debug("Broadcasting marker to neighbours");
+                System.out.println("Broadcasting marker to neighbours");
                 ExecutorService executorService = Executors.newFixedThreadPool(node.getNodes().size() - 1);
                 node.getNodes().entrySet().parallelStream().filter(n -> n.getKey() != node.getId()).forEach(entry -> {
                     executorService.execute(() -> {
                         try {
                             RemoteUtil.getRemoteNode(entry.getKey(), entry.getValue()).receiveMarker(node.getId());
-                            logger.debug("Marker sent to nodeId=" + entry.getKey());
+                            System.out.println("Marker sent to nodeId=" + entry.getKey());
                         } catch (RemoteException e) {
                             logger.error("Failed to sent marker to nodeId=" + entry.getKey(), e);
                         }
@@ -138,7 +138,7 @@ public final class NodeRemote extends UnicastRemoteObject implements NodeServer 
             }
             snapshot.stopRecording(nodeId);
             if (!snapshot.isRecording()) {
-                logger.debug("Received all markers for snapshot on nodeId=" + nodeId);
+                System.out.println("Received all markers for snapshot on nodeId=" + nodeId);
                 node.stopSnapshotRecording();
             }
         } finally {

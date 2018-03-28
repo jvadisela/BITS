@@ -36,7 +36,7 @@ public abstract class StorageUtil {
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(getFileName(node.getId()), true)))) {
             @NotNull Snapshot snapshot = node.getSnapshot();
             writer.println(snapshot.getId() + SEPARATOR + snapshot.getLocalBalance() + SEPARATOR + snapshot.getMoneyInTransfer());
-            logger.debug("Storage wrote a snapshot=" + snapshot);
+            System.out.println("Storage wrote a snapshot=" + snapshot);
         } catch (Exception e) {
             logger.error("Failed to write snapshot of node=" + node, e);
         }
