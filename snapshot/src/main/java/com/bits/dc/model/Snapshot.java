@@ -15,13 +15,13 @@ public final class Snapshot implements Serializable {
 	private int id;
     private int localBalance;
     private int moneyInTransfer;
-    private final Set<Integer> unrecordedChannels = new HashSet<>();
+    private final Set<String> unrecordedChannels = new HashSet<>();
 
-    public void startSnapshotRecording(int nodeId, int balance, Map<Integer, String> nodes) {
+    public void startSnapshotRecording(String nodeId, int balance, Map<String, String> nodes) {
         id++;
         localBalance = balance;
         moneyInTransfer = 0;
-        unrecordedChannels.addAll(nodes.entrySet().parallelStream().filter(n -> n.getKey() != nodeId).map(Map.Entry::getKey).collect(Collectors.toSet()));
+        unrecordedChannels.addAll(nodes.entrySet().parallelStream().filter(n -> !n.getKey().equals(nodeId)).map(Map.Entry::getKey).collect(Collectors.toSet()));
     }
 
     public void stopSnapshotRecording() {
@@ -42,13 +42,13 @@ public final class Snapshot implements Serializable {
         return moneyInTransfer;
     }
 
-    public void incrementMoneyInTransfer(int recipientNodeId, int amount) {
+    public void incrementMoneyInTransfer(String recipientNodeId, int amount) {
         if (unrecordedChannels.contains(recipientNodeId)) {
             moneyInTransfer += amount;
         }
     }
 
-    public void stopRecording(int nodeId) {
+    public void stopRecording(String nodeId) {
         unrecordedChannels.remove(nodeId);
     }
 

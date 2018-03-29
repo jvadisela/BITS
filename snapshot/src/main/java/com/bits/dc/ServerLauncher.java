@@ -5,7 +5,7 @@ import com.bits.dc.utils.SnapshotPersistenceUtil;
 
 public final class ServerLauncher extends AbstractMachine {
 
-    /**
+	/**
      * Description: method name,node host,node id,existing node host,existing node id
      * Example: join,localhost,10,none,0
      * Example: join,localhost,15,localhost,10
@@ -16,6 +16,19 @@ public final class ServerLauncher extends AbstractMachine {
      * Example: cut
      */
     public static void main(String[] args) {
+    	/*
+    	final String[] banks = { "SBI  ", "PNB  ", "CITI ", "ICICI" };
+    	String nodeName = (String) JOptionPane.showInputDialog(null, 
+    	        "Please pick one of the following names of Node",
+    	        "Bank",
+    	        JOptionPane.QUESTION_MESSAGE, 
+    	        null, 
+    	        banks, 
+    	        banks[0]);
+    	System.out.println(nodeName);
+    	*/
+    	
+    	
         System.out.println("You can change service configuration parameters in " + ServiceConfiguration.CONFIGURATION_FILE);
         System.out.println("Service configuration: RMI port=" + RMI_PORT);
         System.out.println("Service configuration: BankTransfer MIN_AMOUNT=" + Constants.MIN_AMOUNT + ", MAX_AMOUNT=" + Constants.MAX_AMOUNT + ", INITIAL_BALANCE=" + Constants.INITIAL_BALANCE);

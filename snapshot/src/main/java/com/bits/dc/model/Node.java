@@ -13,7 +13,7 @@ import com.google.common.base.MoreObjects;
 
 public final class Node implements Serializable {
 
-    private final int id;
+    private final String id;
 
     private final String host;
 
@@ -21,13 +21,9 @@ public final class Node implements Serializable {
 
     private final Snapshot snapshot;
 
-    private final Map<Integer, String> nodes = new HashMap<>();
+    private final Map<String, String> nodes = new HashMap<>();
 
-    public Node() {
-        this(0, "");
-    }
-
-    public Node(int id, String host) {
+    public Node(String id, String host) {
         this.id = id;
         this.host = host;
         item = new Account(Constants.INITIAL_BALANCE);
@@ -35,7 +31,7 @@ public final class Node implements Serializable {
         nodes.put(id, host);
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -61,11 +57,11 @@ public final class Node implements Serializable {
         snapshot.stopSnapshotRecording();
     }
 
-    public void putNodes(Map<Integer, String> nodes) {
+    public void putNodes(Map<String, String> nodes) {
         this.nodes.putAll(nodes);
     }
 
-    public void putNode(int id, String host) {
+    public void putNode(String id, String host) {
         nodes.put(id, host);
     }
 
@@ -74,7 +70,7 @@ public final class Node implements Serializable {
         return host;
     }
 
-    public Map<Integer, String> getNodes() {
+    public Map<String, String> getNodes() {
         return Collections.unmodifiableMap(nodes);
     }
 

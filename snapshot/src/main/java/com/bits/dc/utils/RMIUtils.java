@@ -11,7 +11,7 @@ public abstract class RMIUtils {
         return getRemoteNode(node.getId(), node.getHost());
     }
 
-    public static IServer getRemoteNode(int id, String host) {
+    public static IServer getRemoteNode(String id, String host) {
         try {
             return (IServer) Naming.lookup("rmi://" + host + "/NodeRemote" + id);
         } catch (Exception e) {

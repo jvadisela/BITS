@@ -24,13 +24,9 @@ public class AbstractMachine {
 	private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
 
-	public static void create(String nodeHost, int nodeId) throws Exception {
+	public static void create(String nodeHost, String nodeId) throws Exception {
 		if (nodeState != NodeState.DISCONNECTED) {
 			System.out.println("Must be DISCONNECTED to create! Current nodeState=" + nodeState);
-			return;
-		}
-		if (nodeId <= 0) {
-			System.out.println("Node id must be positive integer [ nodeID > 0 ] !");
 			return;
 		}
 		startRMIRegistry();
@@ -41,14 +37,10 @@ public class AbstractMachine {
 		startMoneyTransferring();
 	}
 
-	public static void join(String nodeHost, int nodeId, String existingNodeHost, int existingNodeId)
+	public static void join(String nodeHost, String nodeId, String existingNodeHost, String existingNodeId)
 			throws Exception {
 		if (nodeState != NodeState.DISCONNECTED) {
 			System.out.println("Must be DISCONNECTED to join! Current nodeState=" + nodeState);
-			return;
-		}
-		if (nodeId <= 0) {
-			System.out.println("Node id must be positive integer [ nodeID > 0 ] !");
 			return;
 		}
 		startRMIRegistry();
@@ -94,7 +86,7 @@ public class AbstractMachine {
 		RMIUtils.getRemoteNode(node).receiveMarker(node.getId());
 	}
 
-	private static Node register(int id, String host) throws Exception {
+	private static Node register(String id, String host) throws Exception {
 		System.setProperty("java.rmi.server.hostname", host);
 		Node node = new Node(id, host);
 		Naming.bind("rmi://" + node.getHost() + "/NodeRemote" + node.getId(), new RemoteNode(node));
@@ -152,7 +144,7 @@ public class AbstractMachine {
 
 	private static Node getRandomNode() {
 		int index = new Random().nextInt(node.getNodes().size() - 1);
-		int nodeId = node.getNodes().keySet().parallelStream().filter(n -> n != node.getId())
+		String nodeId = node.getNodes().keySet().parallelStream().filter(n -> !n.equals(node.getId()))
 				.collect(Collectors.toList()).get(index);
 		return new Node(nodeId, node.getNodes().get(nodeId));
 	}

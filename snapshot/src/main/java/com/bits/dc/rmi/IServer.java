@@ -8,12 +8,8 @@ import com.bits.dc.model.Node;
 public interface IServer extends Remote {
 
     Node getNode() throws RemoteException;
-
-    void addNode(int id, String host) throws RemoteException;
-
-    void transferMoney(int recipientNodeId, int amount) throws RemoteException;
-
-    boolean acceptMoney(int senderNodeId, int amount) throws RemoteException;
-
-    void receiveMarker(int nodeId) throws RemoteException;
+    void addNode(String id, String host) throws RemoteException;
+    void transferMoney(String recipientNodeId, int amount) throws RemoteException;
+    boolean acceptMoney(String senderNodeId, int amount) throws RemoteException;
+    void receiveMarker(String nodeId) throws RemoteException;
 }

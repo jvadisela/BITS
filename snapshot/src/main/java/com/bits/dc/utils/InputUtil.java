@@ -18,13 +18,8 @@ public abstract class InputUtil {
             Class<?>[] methodParameterTypes = new Class<?>[commands.length - 1];
             for (int i = 1; i < commands.length; i++) {
                 int param = i - 1;
-                if (INTEGER.matcher(commands[i]).find()) {
-                    params[param] = Integer.parseInt(commands[i]);
-                    methodParameterTypes[param] = int.class;
-                } else {
-                    params[param] = commands[i];
-                    methodParameterTypes[param] = String.class;
-                }
+                params[param] = commands[i];
+                methodParameterTypes[param] = String.class;
             }
             System.out.println("Calling method=" + commands[0] + Arrays.toString(params));
             try {

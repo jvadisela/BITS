@@ -39,7 +39,7 @@ public abstract class SnapshotPersistenceUtil {
         }
     }
 
-    public static void removeFile(int nodeId) {
+    public static void removeFile(String nodeId) {
         try {
             Path path = Paths.get(getFileName(nodeId));
             if (Files.exists(path)) {
@@ -52,7 +52,7 @@ public abstract class SnapshotPersistenceUtil {
     }
 
     
-    private static String getFileName(int nodeId) {
+    private static String getFileName(String nodeId) {
         return STORAGE_FOLDER + "/Node-" + nodeId + ".csv";
     }
 }
