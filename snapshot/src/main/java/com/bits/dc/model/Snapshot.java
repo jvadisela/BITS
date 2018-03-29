@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -12,12 +11,10 @@ import com.google.common.base.MoreObjects;
 
 public final class Snapshot implements Serializable {
 
-    private int id;
-
+	private static final long serialVersionUID = 1519821847950264078L;
+	private int id;
     private int localBalance;
-
     private int moneyInTransfer;
-
     private final Set<Integer> unrecordedChannels = new HashSet<>();
 
     public void startSnapshotRecording(int nodeId, int balance, Map<Integer, String> nodes) {
@@ -60,25 +57,32 @@ public final class Snapshot implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + localBalance;
+		result = prime * result + moneyInTransfer;
+		return result;
+	}
 
-        if (o instanceof Snapshot) {
-            Snapshot object = (Snapshot) o;
-
-            return Objects.equals(id, object.id) &&
-                    Objects.equals(localBalance, object.localBalance) &&
-                    Objects.equals(moneyInTransfer, object.moneyInTransfer);
-        }
-
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, localBalance, moneyInTransfer);
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Snapshot other = (Snapshot) obj;
+		if (id != other.id)
+			return false;
+		if (localBalance != other.localBalance)
+			return false;
+		if (moneyInTransfer != other.moneyInTransfer)
+			return false;
+		return true;
+	}
 
     @Override
     public String toString() {

@@ -1,7 +1,7 @@
 package com.bits.dc;
 
 import com.bits.dc.utils.InputUtil;
-import com.bits.dc.utils.StorageUtil;
+import com.bits.dc.utils.SnapshotPersistenceUtil;
 
 public class Client extends AbstractMachine {
 
@@ -26,7 +26,7 @@ public class Client extends AbstractMachine {
 		System.out.println("Example: join,localhost,30,localhost,25");
 		System.out.println("Example: view");
 		System.out.println("Example: cut");
-		StorageUtil.init();
+		SnapshotPersistenceUtil.init();
 		System.out.println("Bank is ready for request >");
 		InputUtil.readInput(ServerLauncher.class.getName());
 	}

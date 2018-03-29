@@ -1,11 +1,9 @@
 package com.bits.dc.utils;
 
 import java.rmi.Naming;
-import java.rmi.RemoteException;
 
 import com.bits.dc.model.Node;
 import com.bits.dc.rmi.IServer;
-import com.bits.dc.rmi.NullNodeRemote;
 
 public abstract class RMIUtils {
 
@@ -17,15 +15,9 @@ public abstract class RMIUtils {
         try {
             return (IServer) Naming.lookup("rmi://" + host + "/NodeRemote" + id);
         } catch (Exception e) {
-        	System.out.println("Failed to get remote interface for id=" + id);
+        	System.out.println("unable to get remote node for id = " + id);
         	e.printStackTrace();
-            try {
-                return new NullNodeRemote(new Node());
-            } catch (RemoteException re) {
-            	System.out.println("Failed to get Null Node Pattern");
-            	re.printStackTrace();
-                throw new RuntimeException("RMI failed miserably", re);
-            }
+            throw new RuntimeException("unable to get remote node for  : ", e);
         }
     }
 }

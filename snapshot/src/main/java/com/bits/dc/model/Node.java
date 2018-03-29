@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.bits.dc.Constants;
-import com.bits.dc.utils.StorageUtil;
+import com.bits.dc.utils.SnapshotPersistenceUtil;
 import com.google.common.base.MoreObjects;
 
 public final class Node implements Serializable {
@@ -17,7 +17,7 @@ public final class Node implements Serializable {
 
     private final String host;
 
-    private final Item item;
+    private final Account item;
 
     private final Snapshot snapshot;
 
@@ -30,7 +30,7 @@ public final class Node implements Serializable {
     public Node(int id, String host) {
         this.id = id;
         this.host = host;
-        item = new Item(Constants.INITIAL_BALANCE);
+        item = new Account(Constants.INITIAL_BALANCE);
         snapshot = new Snapshot();
         nodes.put(id, host);
     }
@@ -40,7 +40,7 @@ public final class Node implements Serializable {
     }
 
     
-    public Item getItem() {
+    public Account getItem() {
         return item;
     }
 
@@ -57,7 +57,7 @@ public final class Node implements Serializable {
     }
 
     public void stopSnapshotRecording() {
-        StorageUtil.write(this);
+        SnapshotPersistenceUtil.write(this);
         snapshot.stopSnapshotRecording();
     }
 

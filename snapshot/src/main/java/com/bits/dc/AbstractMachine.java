@@ -10,20 +10,15 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.bits.dc.model.Node;
 import com.bits.dc.rmi.RemoteNode;
 import com.bits.dc.utils.RMIUtils;
-import com.bits.dc.utils.StorageUtil;
+import com.bits.dc.utils.SnapshotPersistenceUtil;
 
 public class AbstractMachine {
 
 	static final int RMI_PORT = ServiceConfiguration.getRmiPort();
-
-	@Nullable
 	private static Node node;
-
 	private static NodeState nodeState = NodeState.DISCONNECTED;
 
 	private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -122,7 +117,7 @@ public class AbstractMachine {
 	private static void leave() throws Exception {
 		System.out.println("NodeId=" + node.getId() + " is disconnecting from the graph...");
 		Naming.unbind("rmi://" + node.getHost() + "/NodeRemote" + node.getId());
-		StorageUtil.removeFile(node.getId());
+		SnapshotPersistenceUtil.removeFile(node.getId());
 		System.out.println("NodeId=" + node.getId() + " disconnected");
 		node = null;
 		nodeState = NodeState.DISCONNECTED;

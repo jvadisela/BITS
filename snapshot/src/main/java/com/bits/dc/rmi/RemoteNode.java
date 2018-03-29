@@ -31,7 +31,6 @@ public final class RemoteNode extends UnicastRemoteObject implements IServer {
     
     @Override
     public Node getNode() throws RemoteException {
-        System.out.println("Get node=" + node);
         return node;
     }
 

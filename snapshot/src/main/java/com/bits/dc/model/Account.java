@@ -1,17 +1,16 @@
 package com.bits.dc.model;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
 
-public final class Item implements Serializable {
+public final class Account implements Serializable {
 
-    private int balance;
-
+	private static final long serialVersionUID = 690809856446768714L;
+	private int balance;
     private int withdrawAmount;
 
-    public Item(int balance) {
+    public Account(int balance) {
         this.balance = balance;
     }
 
@@ -38,23 +37,26 @@ public final class Item implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + balance;
+		return result;
+	}
 
-        if (o instanceof Item) {
-            Item object = (Item) o;
-
-            return Objects.equals(balance, object.balance);
-        }
-
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(balance);
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Account other = (Account) obj;
+		if (balance != other.balance)
+			return false;
+		return true;
+	}
 
     @Override
     public String toString() {

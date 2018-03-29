@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import com.bits.dc.model.Node;
 import com.bits.dc.model.Snapshot;
 
-public abstract class StorageUtil {
+public abstract class SnapshotPersistenceUtil {
 
     private static final String SEPARATOR = ",";
     private static final String STORAGE_FOLDER = "storage";
